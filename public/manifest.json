@@ -1,0 +1,26 @@
+{
+  "name": "LeetGPT",
+  "version": "1.0.0",
+  "description": "Provides tips and hints for leetcoders.",
+  "manifest_version": 3,
+  "permissions": [
+    "scripting",
+    "https://leetcode.com/*",
+    "https://api.openai.com/v1/chat/completions",
+    "activeTab"
+  ],
+  "action": {
+    "default_popup": "index.html",
+    "default_title": "Open"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://leetcode.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_end"
+    }
+  ],
+  "background": {
+    "service_worker": "background.js"
+  }
+}
