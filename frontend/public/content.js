@@ -80,7 +80,6 @@ async function promptForHint(temperature = 0.5) {
   }
 }
 
-
 /**
 * Fired when a message is sent from either an extension process or a content script.
 */
