@@ -1,2 +1,6 @@
 .env
 sandbox
+*.pyd
+*.pyx
+*.pyxd
+*.pyc
