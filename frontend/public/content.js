@@ -44,6 +44,9 @@ async function promptForHint(temperature = 0.5) {
   let code = scrapeCode();
   let problem = scrapeProblem();
   
+  console.log(code);
+  console.log(problem);
+
   let query = `
   Problem:
   ${problem}
@@ -62,7 +65,7 @@ async function promptForHint(temperature = 0.5) {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "Authorization": `Bearer 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`,
+      "Authorization": `Bearer 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`,
     },
     body: JSON.stringify({
       "model": "gpt-3.5-turbo",
@@ -70,6 +73,8 @@ async function promptForHint(temperature = 0.5) {
       "temperature": temperature,
     }),
   });
+
+  console.log(response);
 
   if (response.ok) {
     const data = await response.json();
@@ -84,6 +89,7 @@ async function promptForHint(temperature = 0.5) {
 * Fired when a message is sent from either an extension process or a content script.
 */
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  console.log("Got message")
   promptForHint().then(sendResponse);
   return true; // return true to indicate you want to send a response asynchronously
 });

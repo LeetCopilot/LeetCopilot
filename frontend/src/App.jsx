@@ -16,6 +16,7 @@ export const App = () => {
           currentWindow: true
       };
 
+      console.log("Sending message to content script");
       /**
        * We can't use "chrome.runtime.sendMessage" for sending messages from React.
        * For sending messages from React we need to specify which tab to send it to.
