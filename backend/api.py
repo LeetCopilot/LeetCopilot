@@ -20,7 +20,6 @@ class HintResponse(BaseModel):
     hint: str
 
 hint_prompt_template = '''Problem:
-  {name}
   {problem}
 
   Code:
@@ -29,7 +28,7 @@ hint_prompt_template = '''Problem:
   I'm stuck on this LeetCode problem and don't know why my code isn't working. Can you give me a hint that is in the spirit of an interview? Only bring up one issue/optimization. Avoid providing explicit solutions but point out general areas of improvement or potential issues in the code.
 
   Keep the response short ideally two sentences, one paragraph max. No matter what do not quote any code from the user. Do not tell them what lines to change and what to change them to. Things like "this incorrect code" should be "correct code" should not be in the response.'''
-hint_prompt = PromptTemplate(template=hint_prompt_template, input_variables=["name", "problem", "code"])
+hint_prompt = PromptTemplate(template=hint_prompt_template, input_variables=["problem", "code"])
 
 # Create the FastAPI app
 app = FastAPI()
@@ -59,7 +58,7 @@ async def get_hint(problem: HintRequest, llm: OpenAI = Depends(get_llm)):
     hint_chain = LLMChain(llm=llm, prompt=hint_prompt)
 
     # Send it over to the LLM
-    hint = hint_chain.run(name=problem.name, problem=problem.description, code=problem.code)
+    hint = hint_chain.run(problem=problem.description, code=problem.code)
     logging.info("Returning hint for problem %s", problem.name)
     logging.info("Hint: %s", hint)
     
