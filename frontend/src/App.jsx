@@ -3,6 +3,104 @@ import axios from 'axios';
 import theme from './theme'
 import { motion } from 'framer-motion';
 
+const styles = {
+    container: {
+        width: '100vw',
+        height: '100vh',
+        padding: '5vw',
+        backgroundColor: '#343B39'
+    },
+    header: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
+    title: {
+        fontSize: '1.5rem'
+    },
+    titleHighlight: {
+        color: 'darkorange'
+    },
+    indicatorContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    indicator: (color) => ({
+        width: '1.5rem',
+        height: '1.5rem',
+        backgroundColor: color,
+        marginRight: '5vw',
+        borderRadius: '100%',
+        boxShadow: '0px 2px 4px rgba(0,0,0,0.5)'
+    }),
+    textAreaContainer: {
+        position: 'relative',
+        display: 'flex',
+        justifyContent: 'center',
+        flexDirection: 'column',
+        alignItems: 'center',
+        width: '80vw'
+    },
+    textArea: {
+        border: '1px solid #000',
+        borderRadius: '10px',
+        padding: '10px',
+        backgroundColor: '#eee',
+        color: 'black',
+        width: '100%',
+        height: '3rem',
+        resize: 'none'
+    },
+    button: {
+        position: 'absolute',
+        bottom: '0rem',
+        right: '-1rem',
+        backgroundColor: 'transparent',
+        color: 'darkorange'
+    },
+    bobbingDivContainer: {
+        position: 'relative',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '1.5rem',
+        height: '1.5rem',
+        backgroundColor: '#121F33',
+        marginLeft: '10vw',
+        marginBottom: '0.5rem',
+        borderRadius: '100%',
+        boxShadow: '0px 2px 4px rgba(0,0,0,0.5)'
+    },
+    innerCircle: {
+        width: '60%',
+        height: '60%',
+        backgroundColor: 'darkorange',
+        borderRadius: '100%',
+        boxShadow: 'inset 0px 1px 2px rgba(0,0,0,0.5)'
+    },
+    highlightLarge: {
+        position: 'absolute',
+        top: '25%',
+        right: '30%',
+        width: '15%',
+        height: '15%',
+        backgroundColor: 'rgba(255,255,255,0.75)',
+        borderRadius: '100%',
+        boxShadow: '0px 1px 2px rgba(0,0,0,0.3)'
+    },
+    highlightSmall: {
+        position: 'absolute',
+        top: '32.5%',
+        right: '27.5%',
+        width: '10%',
+        height: '10%',
+        backgroundColor: 'rgba(255,255,255,0.75)',
+        borderRadius: '100%',
+        boxShadow: '0px 1px 2px rgba(0,0,0,0.3)'
+    }
+};
+
 export const App = () => {
     const [responseFromContent, setResponseFromContent] = useState("Ask whatever you'd like!");
 
@@ -10,7 +108,6 @@ export const App = () => {
       const message = {
           from: "Sender.React",
           message: "hint",
-
       }
 
       const queryInfo = {
@@ -92,61 +189,35 @@ export const App = () => {
 
     return (
       <div style={{width: '100vw', height: '100vh', padding: '5vw', backgroundColor: '#343B39'}}>
-        <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
-          <h3 style={{fontSize: '1.5rem'}}>
+        <div style={styles.header}>
+          <h3 style={styles.title}>
             Leet
-            <span style={{color: 'darkorange'}}>Copilot</span>
+            <span style={styles.titleHighlight}>Copilot</span>
           </h3>
-          <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-            <div style={{width: '1.5rem', height: '1.5rem', backgroundColor: 'darkorange', marginRight: '5vw', borderRadius: '100%', boxShadow: '0px 2px 4px rgba(0,0,0,0.5)'}} />
-            <div style={{width: '1.5rem', height: '1.5rem', backgroundColor: 'gray', marginRight: '5vw', borderRadius: '100%', boxShadow: '0px 2px 4px rgba(0,0,0,0.5)'}} />
+          <div style={styles.indicatorContainer}>
+            <div style={styles.indicator('darkorange')} />
+            <div style={styles.indicator('gray')} />
           </div>
-
         </div>
 
         {/* Make this div bob up and down sine wave style */}
-        <motion.div style={{position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '1.5rem', height: '1.5rem', backgroundColor: '#121F33', marginLeft: '10vw', marginBottom: '0.5rem', borderRadius: '100%', boxShadow: '0px 2px 4px rgba(0,0,0,0.5)'}}
+        <motion.div style={styles.bobbingDivContainer}
                     animate={{y:['-25%', '25%']}}
                     transition={{repeat: Infinity, bounceDamping: 10, duration: 1.5, ease: "circIn", repeatType: "reverse", repeatDelay: 0.1}}
                     >
-          <div style={{width: '60%', height: '60%', backgroundColor: 'darkorange', borderRadius: '100%', boxShadow: 'inset 0px 1px 2px rgba(0,0,0,0.5)'}}>
-            <div style={{position: 'absolute', top: '25%', right: '30%', width: '15%', height: '15%', backgroundColor: 'rgba(255,255,255,0.75)', borderRadius: '100%', boxShadow: '0px 1px 2px rgba(0,0,0,0.3)'}} />
-            <div style={{position: 'absolute', top: '32.5%', right: '27.5%', width: '10%', height: '10%', backgroundColor: 'rgba(255,255,255,0.75)', borderRadius: '100%', boxShadow: '0px 1px 2px rgba(0,0,0,0.3)'}} />
+          <div style={styles.innerCircle}>
+            <div style={styles.highlightLarge} />
+            <div style={styles.highlightSmall} />
           </div>
         </motion.div>
         <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <div style={{ 
-              position: 'relative', 
-              display: 'flex', 
-              justifyContent: 'center', 
-              flexDirection: 'column', 
-              alignItems: 'center', 
-              width: '80vw' 
-            }}>
-              <textarea 
-                  placeholder={responseFromContent} 
-                  style={{ 
-                      border: '1px solid #000', 
-                      borderRadius: '10px', 
-                      padding: '10px', 
-                      backgroundColor: '#eee', 
-                      color: 'black', 
-                      width: '100%', 
-                      height: '3rem', 
-                      resize: 'none' 
-                  }}/>
-              <button 
-                  style={{ 
-                      position: 'absolute', 
-                      bottom: '0rem', 
-                      right: '-1rem', 
-                      backgroundColor: 'transparent', 
-                      color: 'darkorange'
-                  }}>
-                  {'>'}
-              </button>
-            </div>
+          <div style={styles.textAreaContainer}>
+            <textarea placeholder={responseFromContent} style={styles.textArea}/>
+            <button style={styles.button}>
+                {'>'}
+            </button>
           </div>
+        </div>
 
       </div>
     );
