@@ -14,16 +14,16 @@ export const App = () => {
   
   return (
       <div style={{width: '100vw', height: '100vh',backgroundColor: '#343B39'}}>
-        <div style={styles.header}>
+        <nav style={styles.navbar}>
           <h3 style={styles.title}>
             Leet
-            <span style={styles.titleHighlight}>Cop</span>
+            <span style={styles.titleHighlight}>Copilot</span>
           </h3>
           <div style={styles.rightHeader}>
             <div style={styles.menuDot('darkorange')}>☕︎</div>
             <div style={styles.menuDot('gray')}>☰</div>
           </div>
-        </div>
+        </nav>
 
         {/* Make this div bob up and down sine wave style */}
         <motion.div style={styles.bobbingDivContainer}
@@ -137,11 +137,10 @@ export const App = () => {
         x: ['-5%', '5%'],
         y: ['15%'],
         transition: {
-            duration: 0.6,
+            duration: 2,
             ease: "easeInOut",
-            times: [0, 0.5, 1],
             repeat: Infinity,
-            repeatDelay: 0.25,
+            repeatDelay: 1,
             repeatType: "reverse"
         }
       },
@@ -163,10 +162,10 @@ const innerCircleAnimation = {
         x: ['-6%', '12%'],
         y: ['10%'],
         transition: {
-            duration: 0.6,
+            duration: 2,
             ease: "easeInOut",
             repeat: Infinity,
-            repeatDelay: 0.25,
+            repeatDelay: 1,
             repeatType: "reverse"
         }
     },
@@ -188,18 +187,20 @@ const styles = {
         width: '100vw',
         height: '100vh',
         padding: '5vw',
-        backgroundColor: '#343B39',
+        backgroundColor: '#343B39'
       },
-    header: {
+    navbar: {
       display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between'
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      margin: '0 2rem'
     },
     title: {
         fontSize: '1.5rem',
         fontFamily: 'Inter, sans-serif',
         fontWeight: 900,
-        color: 'white'
+        color: 'white',
+        marginTop: '1rem',
     },
     titleHighlight: {
         color: 'darkorange'
@@ -207,13 +208,14 @@ const styles = {
     rightHeader: {
         display: 'flex',
         flexDirection: 'row',
-        alignItems: 'center'
-    },
-    menuDot: (color) => ({
+        alignItems: 'center',
+        gap: '1rem'
+      },
+      menuDot: (color) => ({
         width: '1.5rem',
         height: '1.5rem',
         backgroundColor: color,
-        marginRight: '5vw',
+        margin: 0,
         borderRadius: '100%',
         boxShadow: '0px 2px 4px rgba(0,0,0,0.5)',
         display: 'flex',
@@ -228,24 +230,6 @@ const styles = {
         flexDirection: 'column',
         alignItems: 'center',
         width: '80vw'        
-    },
-    textArea: {
-        border: '1px solid #000',
-        borderRadius: '10px',
-        padding: '10px',
-        color: 'white',
-        width: '100%',
-        height: '3rem',
-        resize: 'none',
-        fontFamily: 'Inter, sans-serif',
-        fontWeight: 400,
-    },
-    button: {
-        position: 'absolute',
-        bottom: '0rem',
-        right: '-1rem',
-        backgroundColor: 'transparent',
-        color: 'darkorange'
     },
     bobbingDivContainer: {
         position: 'relative',
@@ -286,5 +270,24 @@ const styles = {
         backgroundColor: 'rgba(255,255,255,0.75)',
         borderRadius: '100%',
         boxShadow: '0px 1px 2px rgba(0,0,0,0.3)'
-    }
+    },
+    textArea: {
+        border: '1px solid #000',
+        borderRadius: '10px',
+        padding: '10px',
+        color: 'white',
+        width: '100%',
+        height: '3rem',
+        resize: 'none',
+        fontFamily: 'Inter, sans-serif',
+        fontWeight: 400,
+        marginBottom: '1rem',
+    },
+    button: {
+        position: 'absolute',
+        bottom: '1rem',
+        right: '-1rem',
+        backgroundColor: 'transparent',
+        color: 'darkorange'
+    },
 };
