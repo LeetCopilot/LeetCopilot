@@ -46,7 +46,6 @@ async function promptForHint() {
   console.log("Got code: " + code);
   console.log("Got problem: " + problem);
   
-  // Send all the data needed for a request to the backend to the React app
   return {'problem': problem, 'code': code};
 }
 

@@ -13,7 +13,7 @@ export const App = () => {
   
   
   return (
-      <div style={{width: '100vw', height: '100vh', padding: '5vw', backgroundColor: '#343B39'}}>
+      <div style={{width: '100vw', height: '100vh',backgroundColor: '#343B39'}}>
         <div style={styles.header}>
           <h3 style={styles.title}>
             Leet
