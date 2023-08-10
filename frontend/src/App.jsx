@@ -1,53 +1,35 @@
-import React, { useEffect, useState } from 'react';
-
+import React, { useState } from 'react';
+import axios from 'axios';
+import { NavBar, Indicator, PromptBox } from './components';
 
 export const App = () => {
-    const [responseFromContent, setResponseFromContent] = useState('');
+  const [responseFromContent, setResponseFromContent] = useState("");
+  const [isTyping, setIsTyping] = useState(false);  // new state to track user typing
 
-    const requestHint = () => {
-      const message = {
-          from: "Sender.React",
-          message: "hint",
-
-      }
-
-      const queryInfo = {
-          active: true,
-          currentWindow: true
-      };
-
-      console.log("Sending message to content script");
-      /**
-       * We can't use "chrome.runtime.sendMessage" for sending messages from React.
-       * For sending messages from React we need to specify which tab to send it to.
-       */
-      chrome.tabs && chrome.tabs.query(queryInfo, tabs => {
-          const currentTabId = tabs[0].id;
-          /**
-           * Sends a single message to the content script(s) in the specified tab,
-           * with an optional callback to run when a response is sent back.
-           *
-           * The runtime.onMessage event is fired in each content script running
-           * in the specified tab for the current extension.
-           */
-          chrome.tabs.sendMessage(
-              currentTabId,
-              message,
-              (response) => {
-                setResponseFromContent(response);
-              });
+  const requestHint = () => {
+    axios.get('https://catfact.ninja/fact')
+        .then((response) => {
+        console.log(response);
+        setResponseFromContent(response.data.fact);
+        console.log(responseFromContent);
+      })
+      .catch((error) => {
+        console.log(error);
+        setResponseFromContent("Failed to send request to backend");
       });
     };
 
-
-    return (
-        <div>
-          <button onClick={requestHint}>Request Hint</button>
-          <p>
-            {responseFromContent}
-          </p>
-        </div>
-    );
+  return (
+    <div style={{ width: '100vw', height: '100vh', backgroundColor: '#343B39' }}>
+      <NavBar />
+      <Indicator isTyping={isTyping} />
+      <PromptBox 
+        responseFromContent={responseFromContent} 
+        setIsTyping={setIsTyping} 
+        requestHint={requestHint} 
+      />
+    </div>
+  );    
 };
-
+  
 export default App;

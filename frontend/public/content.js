@@ -40,56 +40,19 @@ function scrapeProblem() {
   return extractedText;
 }
 
-async function promptForHint(temperature = 0.5) {
+async function promptForHint() {
   let code = scrapeCode();
   let problem = scrapeProblem();
+  console.log("Got code: " + code);
+  console.log("Got problem: " + problem);
   
-  console.log(code);
-  console.log(problem);
-
-  let query = `
-  Problem:
-  ${problem}
-
-  Code:
-  ${code}
-
-  I'm stuck on this LeetCode problem and don't know why my code isn't working. Can you give me a hint that is in the spirit of an interview? Only bring up one issue/optimization. Avoid providing explicit solutions but point out general areas of improvement or potential issues in the code.
-
-  Keep the response short ideally two sentences, one paragraph max. No matter what do not quote any code from the user. Do not tell them what lines to change and what to change them to. Things like "this incorrect code" should be "correct code" should not be in the response.
-  `;
-
-  console.log(query);
-
-  const response = await fetch("https://api.openai.com/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer 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`,
-    },
-    body: JSON.stringify({
-      "model": "gpt-3.5-turbo",
-      "messages": [{"role": "user", "content": query}],
-      "temperature": temperature,
-    }),
-  });
-
-  console.log(response);
-
-  if (response.ok) {
-    const data = await response.json();
-    const content = data.choices[0].message.content;
-    return content;
-  } else {
-    return null;
-  }
+  return {'problem': problem, 'code': code};
 }
 
 /**
 * Fired when a message is sent from either an extension process or a content script.
 */
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  console.log("Got message")
-  promptForHint().then(sendResponse);
-  return true; // return true to indicate you want to send a response asynchronously
-});
+  console.log("Got message");
+  return promptForHint().then((data) => { sendResponse(data) });
+})
