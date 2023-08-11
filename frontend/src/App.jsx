@@ -6,18 +6,26 @@ export const App = () => {
   const [responseFromContent, setResponseFromContent] = useState("");
   const [isTyping, setIsTyping] = useState(false);  // new state to track user typing
 
+  const message = {
+      from: "Sender.React",
+      message: "hint"
+  };
+
+  const queryInfo = {
+      active: true,
+      currentWindow: true
+  };
+
   const requestHint = () => {
-    axios.get('https://catfact.ninja/fact')
-        .then((response) => {
-        console.log(response);
-        setResponseFromContent(response.data.fact);
-        console.log(responseFromContent);
-      })
-      .catch((error) => {
-        console.log(error);
-        setResponseFromContent("Failed to send request to backend");
-      });
-    };
+    axios.get('http://127.0.0.1:8000/fact')
+      .then((response) => {
+      setResponseFromContent(response.data);
+    })
+    .catch((error) => {
+      console.log(error);
+      setResponseFromContent("Failed to send request to backend, make sure it's running!");
+    });
+  };
 
   return (
     <div style={{ width: '100vw', height: '100vh', backgroundColor: '#343B39' }}>
@@ -31,5 +39,4 @@ export const App = () => {
     </div>
   );    
 };
-  
 export default App;

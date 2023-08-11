@@ -6,9 +6,10 @@ const PromptBox = ({ responseFromContent, setIsTyping, requestHint }) => {
     <div style={{ display: 'flex', justifyContent: 'center' }}>
       <div style={styles.textAreaContainer}>
         <textarea 
-            placeholder={"Ask whatever you'd like!"} 
+            placeholder={"Test the api"} 
             style={styles.textArea}
             value={responseFromContent}
+            onChange={() => {}}
             onFocus={() => setIsTyping(true)}
             onBlur={() => setIsTyping(false)}
         />
