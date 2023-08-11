@@ -1,10 +1,11 @@
 import logging
 import os
+import random
 from fastapi import FastAPI, Depends
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 from dotenv import load_dotenv
 from typing import Optional
-
 from langchain.llms import OpenAI
 from langchain import PromptTemplate, LLMChain
 
@@ -29,14 +30,38 @@ hint_prompt_template = '''Problem:
 
   Keep the response short ideally two sentences, one paragraph max. No matter what do not quote any code from the user. Do not tell them what lines to change and what to change them to. Things like "this incorrect code" should be "correct code" should not be in the response.'''
 hint_prompt = PromptTemplate(template=hint_prompt_template, input_variables=["problem", "code"])
+fact_index = 0
 
 # Create the FastAPI app
 app = FastAPI()
 
+# Configure CORS
+origins = [
+    "http://localhost:5173",
+    "chrome-extension://joecpfmckhoobfipcmmhhkkmohhjebmm"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"]
+)
+
 # Create the main endpoint
 @app.get("/")
-async def root():
+async def root() -> str:
+    print("Welcome to LeetCopilot!")
     return "Welcome to LeetCopilot!"
+
+@app.get('/fact')
+async def health() -> str:
+    global fact_index
+    fact_index += 1
+    return ['LeetCopilot will be a huge hit! Guaranteed🪓', 
+            'LeetCopilots founder, Ridha, is very cool😎', 
+            'LeetCopilots developers are certified stinky👃'][fact_index % 3]
 
 # LLM Dependency injection
 def get_llm() -> OpenAI:
