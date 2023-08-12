@@ -1,4 +1,4 @@
-env/
+backend/env
 .env
 sandbox
 *.pyd
