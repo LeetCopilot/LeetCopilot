@@ -35,7 +35,7 @@ function scrapeCode() {
 }
 
 function scrapeProblem() {
-  const html = document.querySelector('._1l1MA').innerHTML;
+  const html = document.querySelector('div[data-track-load="description_content"]').innerHTML;
   const extractedText = extractTextFromHTML(html);
   return extractedText;
 }
@@ -53,6 +53,10 @@ async function promptForHint() {
 * Fired when a message is sent from either an extension process or a content script.
 */
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  console.log("Got message");
-  return promptForHint().then((data) => { sendResponse(data) });
-})
+  switch (message.type) {
+    case 'SCRAPE_HINT_DATA':
+      console.log("Prompting for hint");
+      sendResponse({'problem': scrapeProblem(), 'code': scrapeCode()});
+      return true;
+  }
+});
