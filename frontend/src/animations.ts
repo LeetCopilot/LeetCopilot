@@ -1,4 +1,6 @@
-const repeatTransition = {
+import { Transition, Variants } from "framer-motion";
+
+const repeatTransition: Transition = {
     duration: 2,
     ease: "easeInOut",
     repeat: Infinity,
@@ -6,7 +8,7 @@ const repeatTransition = {
     repeatType: "reverse"
 };
 
-const idleTransition = {
+const idleTransition: Transition = {
     ...repeatTransition,
     duration: 1.5,
     ease: "circIn",
@@ -14,7 +16,7 @@ const idleTransition = {
     bounceDamping: 10
 };
 
-export const bobAnimation = {
+export const bobAnimation: Variants = {
     typing: {
         x: ['-5%', '5%'],
         y: ['15%'],
@@ -26,7 +28,7 @@ export const bobAnimation = {
     }
 };
 
-export const innerCircleAnimation = {
+export const innerCircleAnimation: Variants = {
     typing: {
         x: ['-6%', '12%'],
         y: ['10%'],
