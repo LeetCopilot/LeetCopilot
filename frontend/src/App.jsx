@@ -8,7 +8,7 @@ export const App = () => {
 
   const message = {
       from: "Sender.React",
-      message: "hint"
+      type: "SCRAPE_HINT_DATA",
   };
 
   const queryInfo = {
@@ -23,15 +23,7 @@ export const App = () => {
         currentTabId,
         message,
         (response) => {
-          setResponseFromContent(response);
-          // axios.get('http://127.0.0.1:8000/fact')
-          //   .then((response) => {
-          //   setResponseFromContent(response.data);
-          // })
-          // .catch((error) => {
-          //   console.log(error);
-          //   setResponseFromContent("Failed to send request to backend, make sure it's running!");
-          // });
+          setResponseFromContent(response.problem + "\n" + response.code);
         });
       });
   };
