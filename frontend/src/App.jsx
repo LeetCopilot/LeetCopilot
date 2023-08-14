@@ -17,14 +17,23 @@ export const App = () => {
   };
 
   const requestHint = () => {
-    axios.get('http://127.0.0.1:8000/fact')
-      .then((response) => {
-      setResponseFromContent(response.data);
-    })
-    .catch((error) => {
-      console.log(error);
-      setResponseFromContent("Failed to send request to backend, make sure it's running!");
-    });
+    chrome.tabs && chrome.tabs.query(queryInfo, tabs => {
+      const currentTabId = tabs[0].id;
+      chrome.tabs.sendMessage(
+        currentTabId,
+        message,
+        (response) => {
+          setResponseFromContent(response);
+          // axios.get('http://127.0.0.1:8000/fact')
+          //   .then((response) => {
+          //   setResponseFromContent(response.data);
+          // })
+          // .catch((error) => {
+          //   console.log(error);
+          //   setResponseFromContent("Failed to send request to backend, make sure it's running!");
+          // });
+        });
+      });
   };
 
   return (

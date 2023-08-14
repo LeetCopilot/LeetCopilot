@@ -54,5 +54,7 @@ async function promptForHint() {
 */
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   console.log("Got message");
-  return promptForHint().then((data) => { sendResponse(data) });
+  return "Success!";
+  // promptForHint().then((data) => { sendResponse(data) });
+  // return true;
 })
