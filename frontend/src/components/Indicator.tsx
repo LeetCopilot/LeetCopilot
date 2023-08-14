@@ -3,25 +3,29 @@ import { motion } from 'framer-motion';
 import { styles } from '../styles';
 import { bobAnimation, innerCircleAnimation } from '../animations';
 
-const Indicator = ({ isTyping }) => {
+type IndicatorProps = {
+  isTyping: boolean;
+};
+
+const Indicator = ({ isTyping }: IndicatorProps) => {
   return (
-    <motion.div 
+    <motion.div
       style={styles.bobbingDivContainer}
       variants={bobAnimation}
       initial="animate"
-      animate={isTyping ? "typing" : "idle"}
+      animate={isTyping ? 'typing' : 'idle'}
     >
-      <motion.div 
+      <motion.div
         style={styles.innerCircle}
         variants={innerCircleAnimation}
         initial="animate"
-        animate={isTyping ? "typing" : "idle"}
+        animate={isTyping ? 'typing' : 'idle'}
       >
         <div style={styles.highlightLarge} />
         <div style={styles.highlightSmall} />
       </motion.div>
     </motion.div>
   );
-}
+};
 
 export default Indicator;
