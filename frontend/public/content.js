@@ -43,8 +43,6 @@ function scrapeDescription() {
 function scrapeHintData() {
   let code = scrapeCode();
   let description = scrapeDescription();
-  console.log("Got code: " + code);
-  console.log("Got description: " + description);
   
   return {'description': description, 'code': code};
 }
