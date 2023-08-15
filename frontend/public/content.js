@@ -55,8 +55,11 @@ function scrapeHintData() {
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   switch (message.type) {
     case 'SCRAPE_HINT_DATA':
-      console.log("Prompting for hint");
       sendResponse(scrapeHintData());
       return true;
   }
 });
+
+window.onload = () => {
+  console.log("Loaded content.js");
+}
