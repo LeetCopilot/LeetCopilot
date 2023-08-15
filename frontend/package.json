@@ -49,7 +49,7 @@
       "patterns": [
         "src"
       ],
-      "extensions": "ts,tsx"
+      "extensions": "ts,tsx,css"
     }
   }
 }
