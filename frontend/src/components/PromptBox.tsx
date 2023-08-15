@@ -12,12 +12,13 @@ const PromptBox = ({ responseFromContent, setIsTyping, requestHint }: PromptBoxP
     <div style={{ display: 'flex', justifyContent: 'center' }}>
       <div style={styles.textAreaContainer}>
         <textarea
-          placeholder={'Test the content.js script'}
+          placeholder={'Your hint will be shown here!'}
           style={styles.textArea}
           value={responseFromContent}
           onChange={() => {}}
           onFocus={() => setIsTyping(true)}
           onBlur={() => setIsTyping(false)}
+          readOnly
         />
         <button onClick={requestHint} style={styles.button}>
           {'>'}
