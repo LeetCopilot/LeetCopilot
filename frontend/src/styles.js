@@ -93,7 +93,7 @@ export const styles = {
         padding: '10px',
         color: 'white',
         width: '100%',
-        height: '3rem',
+        height: '5rem',
         resize: 'none',
         fontFamily: 'Inter, sans-serif',
         fontWeight: 400,

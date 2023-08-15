@@ -34,19 +34,19 @@ function scrapeCode() {
   return code;
 }
 
-function scrapeProblem() {
+function scrapeDescription() {
   const html = document.querySelector('div[data-track-load="description_content"]').innerHTML;
   const extractedText = extractTextFromHTML(html);
   return extractedText;
 }
 
-async function promptForHint() {
+function scrapeHintData() {
   let code = scrapeCode();
-  let problem = scrapeProblem();
+  let description = scrapeDescription();
   console.log("Got code: " + code);
-  console.log("Got problem: " + problem);
+  console.log("Got description: " + description);
   
-  return {'problem': problem, 'code': code};
+  return {'description': description, 'code': code};
 }
 
 /**
@@ -56,7 +56,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   switch (message.type) {
     case 'SCRAPE_HINT_DATA':
       console.log("Prompting for hint");
-      sendResponse({'problem': scrapeProblem(), 'code': scrapeCode()});
+      sendResponse(scrapeHintData());
       return true;
   }
 });

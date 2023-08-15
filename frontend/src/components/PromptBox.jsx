@@ -6,7 +6,7 @@ const PromptBox = ({ responseFromContent, setIsTyping, requestHint }) => {
     <div style={{ display: 'flex', justifyContent: 'center' }}>
       <div style={styles.textAreaContainer}>
         <textarea 
-            placeholder={"Test the content.js script"} 
+            placeholder={"Your hint will be here!"} 
             style={styles.textArea}
             value={responseFromContent}
             onChange={() => {}}
