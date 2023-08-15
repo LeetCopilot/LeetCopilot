@@ -28,7 +28,7 @@ export const App = () => {
   };
 
   return (
-    <div style={{ width: '100vw', height: '100vh', backgroundColor: '#343B39' }}>
+    <div className="h-full w-full p-4">
       <NavBar />
       <Indicator isTyping={isTyping} />
       <PromptBox
