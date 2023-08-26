@@ -45,11 +45,8 @@ const App: FC = () => {
     try {
       const currentTabId = await getCurrentTabId();
       const leetData = await sendMessageToContentScript(currentTabId);
-      
-      const response = await axios.post('http://localhost:8000/hint', {
-        description: leetData.description,
-        code: leetData.code
-      });
+
+      const response = await axios.post('http://localhost:8000/hint', leetData);
 
       setHint(response.data);
 

@@ -58,10 +58,10 @@ function scrapeDescription() {
 function scrapeHintData() {
   const code = scrapeCode();
   const description = scrapeDescription();
-  
+
   return {
-      description,
-      code
+    description,
+    code
   };
 }
 
