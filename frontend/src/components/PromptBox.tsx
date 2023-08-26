@@ -1,5 +1,5 @@
-import React from 'react';
-import { styles } from '../styles';
+import React from "react";
+import { styles } from "../styles";
 
 type PromptBoxProps = {
   responseFromContent: string;
@@ -11,7 +11,7 @@ const PromptBox = ({ responseFromContent, setIsTyping, requestHint }: PromptBoxP
   return (
     <div className="flex flex-col justify-center">
       <textarea
-        placeholder={'Test the content.js script'}
+        placeholder={"Test the content.js script"}
         className="h-12 w-full resize-none rounded-lg border-solid p-2"
         value={responseFromContent}
         onChange={() => {}}

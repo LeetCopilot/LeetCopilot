@@ -1,14 +1,14 @@
 async function fetchOpenAIData(prompt, temperature, max_tokens) {
   const fetchData = async () => {
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
-      method: 'POST',
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authorization: `Bearer ${key}`,
       },
       body: JSON.stringify({
-        model: 'gpt-3.5-turbo',
-        messages: [{ role: 'user', content: prompt }],
+        model: "gpt-3.5-turbo",
+        messages: [{ role: "user", content: prompt }],
         temperature: temperature,
       }),
     });
@@ -33,7 +33,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     })
     .catch((error) => {
       console.error(error);
-      sendResponse({ responseText: 'Error occurred' });
+      sendResponse({ responseText: "Error occurred" });
     });
 
   return true; // Make sure to return true to keep the message channel open for async response

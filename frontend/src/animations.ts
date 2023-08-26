@@ -1,41 +1,41 @@
-import { Transition, Variants } from 'framer-motion';
+import { Transition, Variants } from "framer-motion";
 
 const repeatTransition: Transition = {
   duration: 2,
-  ease: 'easeInOut',
+  ease: "easeInOut",
   repeat: Infinity,
   repeatDelay: 1,
-  repeatType: 'reverse',
+  repeatType: "reverse",
 };
 
 const idleTransition: Transition = {
   ...repeatTransition,
   duration: 1.5,
-  ease: 'circIn',
+  ease: "circIn",
   repeatDelay: 0.1,
   bounceDamping: 10,
 };
 
 export const bobAnimation: Variants = {
   typing: {
-    x: ['-5%', '5%'],
-    y: ['15%'],
+    x: ["-5%", "5%"],
+    y: ["15%"],
     transition: repeatTransition,
   },
   idle: {
-    y: ['-25%', '25%'],
+    y: ["-25%", "25%"],
     transition: idleTransition,
   },
 };
 
 export const innerCircleAnimation: Variants = {
   typing: {
-    x: ['-6%', '12%'],
-    y: ['10%'],
+    x: ["-6%", "12%"],
+    y: ["10%"],
     transition: repeatTransition,
   },
   idle: {
-    y: ['-5%', '5%'],
+    y: ["-5%", "5%"],
     transition: idleTransition,
   },
 };

@@ -1,16 +1,16 @@
 function extractCodeFromHTML(html) {
   const parser = new DOMParser();
-  const doc = parser.parseFromString(html, 'text/html');
-  const spanElements = doc.querySelectorAll('div.view-line > span');
+  const doc = parser.parseFromString(html, "text/html");
+  const spanElements = doc.querySelectorAll("div.view-line > span");
 
-  let code = '';
+  let code = "";
   spanElements.forEach((span) => {
     const lineText = Array.from(span.childNodes)
       .map((node) => {
-        return node.textContent.replace('&nbsp;', ' ');
+        return node.textContent.replace("&nbsp;", " ");
       })
-      .join('');
-    code += lineText + '\n';
+      .join("");
+    code += lineText + "\n";
   });
 
   return code.trim();
@@ -18,9 +18,9 @@ function extractCodeFromHTML(html) {
 
 function extractTextFromHTML(html) {
   const parser = new DOMParser();
-  const doc = parser.parseFromString(html, 'text/html');
+  const doc = parser.parseFromString(html, "text/html");
 
-  const images = doc.getElementsByTagName('img');
+  const images = doc.getElementsByTagName("img");
   for (let i = images.length - 1; i >= 0; i--) {
     images[i].parentNode.removeChild(images[i]);
   }
@@ -29,7 +29,7 @@ function extractTextFromHTML(html) {
 }
 
 function scrapeCode() {
-  const element = document.querySelector('.view-lines.monaco-mouse-cursor-text');
+  const element = document.querySelector(".view-lines.monaco-mouse-cursor-text");
   const code = extractCodeFromHTML(element.innerHTML);
   return code;
 }
@@ -43,8 +43,8 @@ function scrapeProblem() {
 async function promptForHint() {
   let code = scrapeCode();
   let problem = scrapeProblem();
-  console.log('Got code: ' + code);
-  console.log('Got problem: ' + problem);
+  console.log("Got code: " + code);
+  console.log("Got problem: " + problem);
 
   return { problem: problem, code: code };
 }
@@ -54,12 +54,12 @@ async function promptForHint() {
  */
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   switch (message.type) {
-    case 'SCRAPE_HINT_DATA':
+    case "SCRAPE_HINT_DATA":
       sendResponse({ problem: scrapeProblem(), code: scrapeCode() });
       return true;
   }
 });
 
 window.onload = () => {
-  console.log('Loaded content.js');
+  console.log("Loaded content.js");
 };
