@@ -46,7 +46,7 @@
         "src",
         "public"
       ],
-      "extensions": "ts,tsx,css"
+      "extensions": "ts,tsx,js,css"
     }
   }
 }
