@@ -13,7 +13,6 @@ const idleTransition: Transition = {
     duration: 1.5,
     ease: "circIn",
     repeatDelay: 0.1,
-    bounceDamping: 10
 };
 
 export const bobAnimation: Variants = {
