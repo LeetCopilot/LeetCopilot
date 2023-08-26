@@ -2,51 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  :root {
-    font-family: 'Inter', sans-serif;
-
-    --background: 163 6% 22%;
-    --foreground: 209 40% 98%;
-
-    --card: 221.2 84% 4.9%;
-    --card-foreground: 209 40% 98%;
-
-    --popover: 221.2 84% 4.9%;
-    --popover-foreground: 209 40% 98%;
-
-    --primary: 209 40% 98%;
-    --primary-foreground: 221.2 47.4% 11.2%;
-
-    --secondary: 216.2 32.6% 17.5%;
-    --secondary-foreground: 209 40% 98%;
-
-    --muted: 216.2 32.6% 17.5%;
-    --muted-foreground: 214 20.2% 65.1%;
-
-    --accent: 216.2 32.6% 17.5%;
-    --accent-foreground: 209 40% 98%;
-
-    --destructive: -1 62.8% 30.6%;
-    --destructive-foreground: 209 40% 98%;
-
-    --border: 216.2 32.6% 17.5%;
-    --input: 216.2 32.6% 17.5%;
-    --ring: hsl(211.7, 26.8%, 83.9);
-
-    --radius: 0.5rem;
-  }
-}
-
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
-}
-
 html,
 body,
 #root {

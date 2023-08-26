@@ -1,7 +1,5 @@
 import React from 'react';
 import { styles } from '../styles';
-import { Textarea } from './ui/textarea';
-import { Button } from './ui/button';
 
 type PromptBoxProps = {
   responseFromContent: string;
@@ -12,7 +10,7 @@ type PromptBoxProps = {
 const PromptBox = ({ responseFromContent, setIsTyping, requestHint }: PromptBoxProps) => {
   return (
     <div className="flex flex-col justify-center">
-      <Textarea
+      <textarea
         placeholder={'Test the content.js script'}
         className="resize-none"
         value={responseFromContent}
@@ -21,7 +19,7 @@ const PromptBox = ({ responseFromContent, setIsTyping, requestHint }: PromptBoxP
         onBlur={() => setIsTyping(false)}
       />
       <div className="flex w-full justify-end">
-        <Button onClick={requestHint}>Submit</Button>
+        <button onClick={requestHint}>Submit</button>
       </div>
     </div>
   );

@@ -1,6 +1,4 @@
 import React from 'react';
-import { styles } from '../styles';
-import { Button } from './ui/button';
 
 const NavBar = () => {
   return (
@@ -10,12 +8,8 @@ const NavBar = () => {
         <span className="text-orange-400">Copilot</span>
       </h3>
       <div className="flex items-center gap-4">
-        <Button variant="default" className="h-8 w-8 rounded-full bg-orange-400">
-          ☕︎
-        </Button>
-        <Button variant="default" className="h-8 w-8 rounded-full bg-gray-400">
-          ☰
-        </Button>
+        <button>☕︎</button>
+        <button>☰</button>
       </div>
     </nav>
   );
