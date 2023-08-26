@@ -4,10 +4,10 @@ function extractCodeFromHTML(html) {
   const spanElements = doc.querySelectorAll('div.view-line > span');
 
   let code = '';
-  spanElements.forEach(span => {
+  spanElements.forEach((span) => {
     const lineText = Array.from(span.childNodes)
-      .map(node => {
-        return node.textContent.replace("&nbsp;", ' ');
+      .map((node) => {
+        return node.textContent.replace('&nbsp;', ' ');
       })
       .join('');
     code += lineText + '\n';
@@ -43,20 +43,23 @@ function scrapeProblem() {
 async function promptForHint() {
   let code = scrapeCode();
   let problem = scrapeProblem();
-  console.log("Got code: " + code);
-  console.log("Got problem: " + problem);
-  
-  return {'problem': problem, 'code': code};
+  console.log('Got code: ' + code);
+  console.log('Got problem: ' + problem);
+
+  return { problem: problem, code: code };
 }
 
 /**
-* Fired when a message is sent from either an extension process or a content script.
-*/
+ * Fired when a message is sent from either an extension process or a content script.
+ */
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   switch (message.type) {
     case 'SCRAPE_HINT_DATA':
-      console.log("Prompting for hint");
-      sendResponse({'problem': scrapeProblem(), 'code': scrapeCode()});
+      sendResponse({ problem: scrapeProblem(), code: scrapeCode() });
       return true;
   }
 });
+
+window.onload = () => {
+  console.log('Loaded content.js');
+};

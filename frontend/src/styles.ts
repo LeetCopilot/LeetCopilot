@@ -1,4 +1,4 @@
-import { CSSProperties } from "react";
+import { CSSProperties } from 'react';
 
 export const styles = {
   container: {
@@ -57,6 +57,7 @@ export const styles = {
     width: '1.5rem',
     height: '1.5rem',
     backgroundColor: '#121F33',
+    marginLeft: '10vw',
     marginBottom: '0.5rem',
     borderRadius: '45%',
     boxShadow: '0px 2px 4px rgba(0,0,0,0.5)',

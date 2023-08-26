@@ -12,7 +12,7 @@ const PromptBox = ({ responseFromContent, setIsTyping, requestHint }: PromptBoxP
     <div className="flex flex-col justify-center">
       <textarea
         placeholder={'Test the content.js script'}
-        className="resize-none"
+        className="h-12 w-full resize-none rounded-lg border-solid p-2"
         value={responseFromContent}
         onChange={() => {}}
         onFocus={() => setIsTyping(true)}
