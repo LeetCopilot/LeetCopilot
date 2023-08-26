@@ -61,7 +61,6 @@ app.add_middleware(
 # Create the main endpoint
 @app.get("/")
 async def root() -> str:
-    print("Welcome to LeetCopilot!")
     return "Welcome to LeetCopilot!"
 
 @app.get('/fact')
@@ -76,7 +75,6 @@ async def health() -> str:
 def get_llm() -> OpenAI:
     # load_dotenv()
     openai_api_key = os.getenv("OPENAI_API_KEY")
-    print(openai_api_key)
     return OpenAI(openai_api_key=openai_api_key, temperature=0.5, max_tokens=1024)
 
 # Endpoint to get a leetcode hint

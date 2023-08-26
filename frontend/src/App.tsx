@@ -46,8 +46,6 @@ const App: FC = () => {
       const currentTabId = await getCurrentTabId();
       const leetData = await sendMessageToContentScript(currentTabId);
 
-      console.log(leetData);
-
       let hint = 'We failed to make a request to the server. Please try again.'; // default hint
 
       const response = await axios.post('http://localhost:8000/hint', {
@@ -55,11 +53,10 @@ const App: FC = () => {
         code: leetData.code
       });
 
-      console.log(response); // Changed `print` to `console.log` as `print` is not defined
       setHint(response.data);
 
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
