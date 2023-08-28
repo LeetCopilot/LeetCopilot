@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { NavBar, Indicator, PromptBox } from './components';
+import React, { useState } from "react";
+import axios from "axios";
+import { NavBar, Indicator, PromptBox } from "./components";
 
 export const App = () => {
-  const [responseFromContent, setResponseFromContent] = useState('');
+  const [responseFromContent, setResponseFromContent] = useState("");
   const [isTyping, setIsTyping] = useState(false); // new state to track user typing
 
   const message = {
-    from: 'Sender.React',
-    type: 'SCRAPE_HINT_DATA',
+    from: "Sender.React",
+    type: "SCRAPE_HINT_DATA",
   };
 
   const queryInfo = {
@@ -22,13 +22,13 @@ export const App = () => {
         const currentTabId = tabs[0].id;
         if (!currentTabId) return;
         chrome.tabs.sendMessage(currentTabId, message, (response) => {
-          setResponseFromContent(response.problem + '\n' + response.code);
+          setResponseFromContent(response.problem + "\n" + response.code);
         });
       });
   };
 
   return (
-    <div style={{ width: '100vw', height: '100vh', backgroundColor: '#343B39' }}>
+    <div className="h-full w-full p-4" style={{ backgroundColor: "#343B39" }}>
       <NavBar />
       <Indicator isTyping={isTyping} />
       <PromptBox

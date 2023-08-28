@@ -1,7 +1,7 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { styles } from '../styles';
-import { bobAnimation, innerCircleAnimation } from '../animations';
+import React from "react";
+import { motion } from "framer-motion";
+import { styles } from "../styles";
+import { bobAnimation, innerCircleAnimation } from "../animations";
 
 type IndicatorProps = {
   isTyping: boolean;
@@ -13,13 +13,13 @@ const Indicator = ({ isTyping }: IndicatorProps) => {
       style={styles.bobbingDivContainer}
       variants={bobAnimation}
       initial="animate"
-      animate={isTyping ? 'typing' : 'idle'}
+      animate={isTyping ? "typing" : "idle"}
     >
       <motion.div
         style={styles.innerCircle}
         variants={innerCircleAnimation}
         initial="animate"
-        animate={isTyping ? 'typing' : 'idle'}
+        animate={isTyping ? "typing" : "idle"}
       >
         <div style={styles.highlightLarge} />
         <div style={styles.highlightSmall} />
