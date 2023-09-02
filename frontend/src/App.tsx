@@ -1,9 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, FC } from "react";
 import axios from "axios";
 import { NavBar, Indicator, PromptBox } from "./components";
 
-export const App = () => {
-  const [responseFromContent, setResponseFromContent] = useState("");
+interface LeetData {
+  title: string;
+  description: string;
+}
+
+const App:FC = () => {
+  const [hint, setHint] = useState("");
   const [isTyping, setIsTyping] = useState(false); // new state to track user typing
 
   const message = {
