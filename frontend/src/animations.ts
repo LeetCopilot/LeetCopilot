@@ -9,11 +9,10 @@ const repeatTransition: Transition = {
 };
 
 const idleTransition: Transition = {
-  ...repeatTransition,
-  duration: 1.5,
-  ease: "circIn",
-  repeatDelay: 0.1,
-  bounceDamping: 10,
+    ...repeatTransition,
+    duration: 1.5,
+    ease: "circIn",
+    repeatDelay: 0.1,
 };
 
 export const bobAnimation: Variants = {

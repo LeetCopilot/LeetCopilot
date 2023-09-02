@@ -13,30 +13,54 @@ export const App = () => {
 
   const queryInfo = {
     active: true,
-    currentWindow: true,
+    currentWindow: true
+  };
+  
+  const getCurrentTabId = (): Promise<number> => {
+    return new Promise((resolve, reject) => {
+      chrome.tabs.query(queryInfo, tabs => {
+        if (tabs && tabs[0] && typeof tabs[0].id === 'number') {
+          resolve(tabs[0].id);
+        } else {
+          reject(new Error('No tabs found'));
+        }
+      });
+    });
   };
 
-  const requestHint = () => {
-    chrome.tabs &&
-      chrome.tabs.query(queryInfo, (tabs) => {
-        const currentTabId = tabs[0].id;
-        if (!currentTabId) return;
-        chrome.tabs.sendMessage(currentTabId, message, (response) => {
-          setResponseFromContent(response.problem + "\n" + response.code);
-        });
+  const sendMessageToContentScript = (tabId: number): Promise<LeetData> => {
+    return new Promise((resolve) => {
+      chrome.tabs.sendMessage(tabId, message, (response) => {
+        resolve(response);
       });
+    });
+  };
+
+  const requestHint = async () => {
+    try {
+      const currentTabId = await getCurrentTabId();
+      const leetData = await sendMessageToContentScript(currentTabId);
+
+      const response = await axios.post('http://localhost:8000/hint', leetData);
+
+      setHint(response.data);
+
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
     <div className="h-full w-full p-4" style={{ backgroundColor: "#343B39" }}>
       <NavBar />
       <Indicator isTyping={isTyping} />
-      <PromptBox
-        responseFromContent={responseFromContent}
-        setIsTyping={setIsTyping}
-        requestHint={requestHint}
+      <PromptBox 
+        responseFromContent={hint} 
+        setIsTyping={setIsTyping} 
+        requestHint={requestHint} 
       />
     </div>
   );
 };
+
 export default App;
