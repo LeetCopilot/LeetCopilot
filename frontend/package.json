@@ -18,26 +18,35 @@
     "framer-motion": "^10.15.0",
     "npm-watch": "^0.11.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "tailwind-merge": "^1.14.0",
+    "tailwindcss-animate": "^1.0.6"
   },
   "devDependencies": {
     "@types/chrome": "^0.0.243",
+    "@types/node": "^20.5.0",
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
     "@vitejs/plugin-react": "^4.0.1",
+    "autoprefixer": "^10.4.15",
     "eslint": "^8.44.0",
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.1",
+    "postcss": "^8.4.27",
+    "prettier": "3.0.2",
+    "prettier-plugin-tailwindcss": "^0.5.2",
+    "tailwindcss": "^3.3.3",
     "typescript": "^5.1.6",
     "vite": "^4.4.0"
   },
   "watch": {
     "build": {
       "patterns": [
-        "src", "public"
+        "src",
+        "public"
       ],
-      "extensions": "ts,tsx, js"
+      "extensions": "ts,tsx,js,css"
     }
   }
 }

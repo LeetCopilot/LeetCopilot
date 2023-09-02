@@ -1,15 +1,10 @@
-import React, { useState, FC } from 'react';
-import axios from 'axios';
-import { NavBar, Indicator, PromptBox } from './components';
+import React, { useState } from "react";
+import axios from "axios";
+import { NavBar, Indicator, PromptBox } from "./components";
 
-interface LeetData {
-  description: string;
-  code: string;
-}
-
-const App: FC = () => {
-  const [hint, setHint] = useState<string>('');
-  const [isTyping, setIsTyping] = useState<boolean>(false);
+export const App = () => {
+  const [responseFromContent, setResponseFromContent] = useState("");
+  const [isTyping, setIsTyping] = useState(false); // new state to track user typing
 
   const message = {
     from: "Sender.React",
@@ -20,7 +15,7 @@ const App: FC = () => {
     active: true,
     currentWindow: true
   };
-
+  
   const getCurrentTabId = (): Promise<number> => {
     return new Promise((resolve, reject) => {
       chrome.tabs.query(queryInfo, tabs => {
@@ -56,7 +51,7 @@ const App: FC = () => {
   };
 
   return (
-    <div style={{ width: '100vw', height: '100vh', backgroundColor: '#343B39' }}>
+    <div className="h-full w-full p-4" style={{ backgroundColor: "#343B39" }}>
       <NavBar />
       <Indicator isTyping={isTyping} />
       <PromptBox 

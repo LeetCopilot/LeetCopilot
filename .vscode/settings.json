@@ -1,7 +1,6 @@
 {
-  "editor.formatOnSave": true,
-  "[python]": {
-    "editor.defaultFormatter": "ms-python.black-formatter"
-  },
-  "python.formatting.provider": "none"
+"editor.formatOnSave": true,
+"prettier.configPath": "./frontend/.prettierrc",
+"prettier.prettierPath": "./frontend/node_modules/prettier/index.cjs",
+"editor.defaultFormatter": "esbenp.prettier-vscode"
 }
