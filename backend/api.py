@@ -74,4 +74,4 @@ async def get_hint(promptData: HintRequest):
     
     logging.log(logging.INFO, f"Hint: {hint[:15]}...")
     
-    return True
+    return hint
