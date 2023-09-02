@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Popup from "./Popup";
 
 const NavBar = () => {
   const [showPopup, setShowPopup] = useState(false);
@@ -19,7 +18,6 @@ const NavBar = () => {
         <button>☰</button>
         <button onClick={togglePopup}>X</button>
       </div>
-      {showPopup && <Popup onClose={togglePopup} />}
     </nav>
   );
 };

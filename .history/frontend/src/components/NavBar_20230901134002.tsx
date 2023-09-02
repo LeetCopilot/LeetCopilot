@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Popup from "./Popup";
+import Popup from "./Popup"; // Import the Popup component
 
 const NavBar = () => {
   const [showPopup, setShowPopup] = useState(false);
@@ -15,9 +15,9 @@ const NavBar = () => {
         <span className="text-orange-400">Copilot</span>
       </h3>
       <div className="flex items-center gap-4">
+        <button onClick={togglePopup}>X</button>
         <button>☕︎</button>
         <button>☰</button>
-        <button onClick={togglePopup}>X</button>
       </div>
       {showPopup && <Popup onClose={togglePopup} />}
     </nav>
