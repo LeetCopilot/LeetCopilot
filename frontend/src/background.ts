@@ -1,4 +1,6 @@
-async function fetchOpenAIData(prompt, temperature, max_tokens) {
+// TODO: What are the types of the parameters? Do we need these functions?
+async function fetchOpenAIData(prompt: string, temperature: any, max_tokens: any) {
+    const key = "FAKE KEY CAUSE IDK"
     const fetchData = async () => {
       const response = await fetch("https://api.openai.com/v1/chat/completions", {
         method: "POST",

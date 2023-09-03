@@ -1,4 +1,4 @@
-function extractCodeFromHTML(html) {
+function extractCodeFromHTML(html: string) {
   const parser = new DOMParser();
   const doc = parser.parseFromString(html, 'text/html');
   const spanElements = doc.querySelectorAll('div.view-line > span');
@@ -7,6 +7,7 @@ function extractCodeFromHTML(html) {
   spanElements.forEach(span => {
     const lineText = Array.from(span.childNodes)
       .map(node => {
+        if (!node.textContent) return '';
         return node.textContent.replace("&nbsp;", ' ');
       })
       .join('');
@@ -16,26 +17,28 @@ function extractCodeFromHTML(html) {
   return code.trim();
 }
 
-function extractTextFromHTML(html) {
+function extractTextFromHTML(html: string) {
   const parser = new DOMParser();
   const doc = parser.parseFromString(html, 'text/html');
 
   const images = doc.getElementsByTagName('img');
   for (let i = images.length - 1; i >= 0; i--) {
-    images[i].parentNode.removeChild(images[i]);
+    images[i].parentNode?.removeChild(images[i]);
   }
 
-  return doc.body.textContent.trim();
+  return doc.body.textContent?.trim() || null;
 }
 
 function scrapeCode() {
-  const element = document.querySelector('.view-lines.monaco-mouse-cursor-text');
-  const code = extractCodeFromHTML(element.innerHTML);
+  const html = document.querySelector('.view-lines.monaco-mouse-cursor-text')?.innerHTML;
+  if (!html) return null;
+  const code = extractCodeFromHTML(html);
   return code;
 }
 
 function scrapeProblem() {
-  const html = document.querySelector('div[data-track-load="description_content"]').innerHTML;
+  const html = document.querySelector('div[data-track-load="description_content"]')?.innerHTML;
+  if (!html) return null;
   const extractedText = extractTextFromHTML(html);
   return extractedText;
 }
