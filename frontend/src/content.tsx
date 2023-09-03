@@ -1,68 +1,94 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import App from './App';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App";
 
+/**
+ * Extracts the code from HTML content.
+ * @param {string} html - The HTML content.
+ * @return {string} - The extracted code.
+ */
 function extractCodeFromHTML(html: string) {
   const parser = new DOMParser();
-  const doc = parser.parseFromString(html, 'text/html');
-  const spanElements = doc.querySelectorAll('div.view-line > span');
+  const doc = parser.parseFromString(html, "text/html");
+  const spanElements = doc.querySelectorAll("div.view-line > span");
 
-  let code = '';
-  spanElements.forEach((span) => {
-    const lineText = Array.from(span.childNodes)
-      .map((node) => {
-        if (!node.textContent) return '';
-        return node.textContent.replace('&nbsp;', ' ');
-      })
-      .join('');
-    code += lineText + '\n';
-  });
-
-  return code.trim();
+  return Array.from(spanElements)
+    .map((span) => {
+      return Array.from(span.childNodes)
+        .map((node) => node.textContent?.replace("&nbsp;", " "))
+        .join("");
+    })
+    .join("\n")
+    .trim();
 }
 
+/**
+ * Extracts the text from HTML content, removing any images.
+ * @param {string} html - The HTML content.
+ * @return {string} - The extracted text.
+ */
 function extractTextFromHTML(html: string) {
   const parser = new DOMParser();
-  const doc = parser.parseFromString(html, 'text/html');
+  const doc = parser.parseFromString(html, "text/html");
+  const images = doc.getElementsByTagName("img");
 
-  const images = doc.getElementsByTagName('img');
-  for (let i = images.length - 1; i >= 0; i--) {
-    images[i].parentNode?.removeChild(images[i]);
-  }
+  Array.from(images).forEach((img) => img.parentNode?.removeChild(img));
 
-  return doc.body.textContent?.trim() || null;
+  return doc.body.textContent?.trim();
 }
 
+/**
+ * Scrapes code from the current document.
+ * @return {string} - The scraped code.
+ */
 function scrapeCode() {
-  const html = document.querySelector('.view-lines.monaco-mouse-cursor-text')?.innerHTML;
-  if (!html) return null;
-  const code = extractCodeFromHTML(html);
-  return code;
+  const element = document.querySelector(".view-lines.monaco-mouse-cursor-text");
+  if (!element) throw new Error("Could not find code element");
+  return extractCodeFromHTML(element.innerHTML);
 }
 
-function scrapeProblem() {
-  const html = document.querySelector('div[data-track-load="description_content"]')?.innerHTML;
-  if (!html) return null;
-  const extractedText = extractTextFromHTML(html);
-  return extractedText;
+/**
+ * Scrapes the description from the current document.
+ * @return {string} - The scraped description.
+ */
+function scrapeDescription() {
+  const element = document.querySelector('div[data-track-load="description_content"]');
+  if (!element) throw new Error("Could not find description element");
+  return extractTextFromHTML(element.innerHTML);
 }
 
-async function promptForHint() {
-  let code = scrapeCode();
-  let problem = scrapeProblem();
-  console.log('Got code: ' + code);
-  console.log('Got problem: ' + problem);
+/**
+ * Compiles scraped hint data.
+ * @return {Object} - An object with scraped code and description.
+ */
+function scrapeHintData() {
+  const code = scrapeCode();
+  const description = scrapeDescription();
 
-  return { problem: problem, code: code };
+  return {
+    description,
+    code,
+  };
 }
+
+// Listener for messages from either an extension process or a content script.
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  switch (message.type) {
+    case "SCRAPE_HINT_DATA":
+      sendResponse(scrapeHintData());
+      return true;
+    default:
+      break;
+  }
+});
 
 /**
  * Fired when a message is sent from either an extension process or a content script.
  */
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   switch (message.type) {
-    case 'SCRAPE_HINT_DATA':
-      sendResponse({ problem: scrapeProblem(), code: scrapeCode() });
+    case "SCRAPE_HINT_DATA":
+      sendResponse({ problem: scrapeDescription(), code: scrapeCode() });
       return true;
   }
 });
@@ -70,13 +96,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 const MAX_WAIT = 5000;
 
 window.onload = async () => {
-  console.log('Loaded content.js with listener');
+  const path = window.location.href.split(".com")[1];
 
-  console.log(window);
-
-  const path = window.location.href.split('.com')[1];
-
-  if (!path.includes('/problems/')) return;
+  if (!path.includes("/problems/")) return;
 
   let editor: Element | null;
   let title: Element | null;
@@ -85,38 +107,46 @@ window.onload = async () => {
   let waitTime = 50;
 
   do {
-    if (timeWaited > MAX_WAIT) {
-      throw new Error('Waited too long for load');
-    }
+    editor = document.querySelector("[data-track-load='code_editor']");
+    title = document.querySelector(`a[href="${path}"]`);
+
+    if (timeWaited > MAX_WAIT) break;
+
     await wait(waitTime);
     timeWaited += waitTime;
     waitTime += 50;
-
-    editor = document.querySelector('.monaco-editor');
-    title = document.querySelector(`a[href="${path}"]`);
   } while (!(editor && title));
 
-  if (!(editor && title)) throw new Error('Page elements not found');
+  if (!(editor && title)) throw new Error("Page elements not found");
 
-  let id = title.textContent?.split('.')[0];
-  if (!id) throw new Error('Could not get problem ID');
+  let id = title.textContent?.split(".")[0];
+  if (!id) throw new Error("Could not get problem ID");
 
   let localStorageKey = findKeyId(id);
-
-  console.log(id, localStorageKey);
-
-  ReactDOM.createRoot(document.querySelector('body')!).render(
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>,
-  );
-
   if (!localStorageKey) {
-    console.log('start editing the code in order to process it');
+    console.log("start editing the code in order to process it");
+  } else {
+    console.log("code", localStorageKey, localStorage.getItem(localStorageKey));
   }
+
+  let root = document.createElement("div");
+  (root.style as any) =
+    "position: absolute; top: 0; left: 0; bottom: 0; right: 0; z-index: 1000; background: transparent; pointer-events: none;";
+  // root.id = "root";
+  editor.appendChild(root);
+
+  ReactDOM.createRoot(root).render(
+    <button
+      className="pointer-events-auto absolute bottom-6 right-6 h-12 w-12 rounded-lg bg-black"
+      onClick={() => console.log("Button Go Brrrrrrr")}
+    >
+      yo
+    </button>,
+  );
 };
 
 function findKeyId(id: string) {
+  // TODO: Handle multiple languages if this is the solution we go with
   for (let i = 0; i < localStorage.length; i++) {
     const key = localStorage.key(i);
     if (key && key.startsWith(id)) return key;
