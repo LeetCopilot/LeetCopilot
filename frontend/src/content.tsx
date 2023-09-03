@@ -107,15 +107,13 @@ window.onload = async () => {
   let waitTime = 50;
 
   do {
-    editor = document.querySelector("[data-track-load='code_editor']");
-    title = document.querySelector(`a[href="${path}"]`);
-
-    if (timeWaited > MAX_WAIT) break;
-
     await wait(waitTime);
     timeWaited += waitTime;
-    waitTime += 50;
-  } while (!(editor && title));
+    waitTime += 50; // Wait 50ms longer each time
+
+    editor = document.querySelector("[data-track-load='code_editor']");
+    title = document.querySelector(`a[href="${path}"]`);
+  } while (!(editor && title) && timeWaited < MAX_WAIT);
 
   if (!(editor && title)) throw new Error("Page elements not found");
 
@@ -123,16 +121,17 @@ window.onload = async () => {
   if (!id) throw new Error("Could not get problem ID");
 
   let localStorageKey = findKeyId(id);
+  // TODO: update logic to give better feedback to user and not just console.log
   if (!localStorageKey) {
     console.log("start editing the code in order to process it");
   } else {
-    console.log("code", localStorageKey, localStorage.getItem(localStorageKey));
+    console.log("code", localStorageKey);
+    console.log(JSON.parse(localStorage.getItem(localStorageKey) || "null"));
   }
 
   let root = document.createElement("div");
   (root.style as any) =
     "position: absolute; top: 0; left: 0; bottom: 0; right: 0; z-index: 1000; background: transparent; pointer-events: none;";
-  // root.id = "root";
   editor.appendChild(root);
 
   ReactDOM.createRoot(root).render(
@@ -140,7 +139,7 @@ window.onload = async () => {
       className="pointer-events-auto absolute bottom-6 right-6 h-12 w-12 rounded-lg bg-black"
       onClick={() => console.log("Button Go Brrrrrrr")}
     >
-      yo
+      Hint
     </button>,
   );
 };
@@ -149,7 +148,7 @@ function findKeyId(id: string) {
   // TODO: Handle multiple languages if this is the solution we go with
   for (let i = 0; i < localStorage.length; i++) {
     const key = localStorage.key(i);
-    if (key && key.startsWith(id)) return key;
+    if (key && key.startsWith(id) && !key.endsWith("updated-time")) return key;
   }
 }
 
