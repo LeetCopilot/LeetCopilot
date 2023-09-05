@@ -18,6 +18,7 @@
     {
       "matches": ["https://leetcode.com/*"],
       "js": ["content.js"],
+      "css": ["assets/index.css"],
       "run_at": "document_end"
     }
   ],
