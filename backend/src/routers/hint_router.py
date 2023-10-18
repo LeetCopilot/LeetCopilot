@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
-from .models import HintRequest
-from .services.langchain_service import get_hint_chain
+from ..models.hint_request import HintRequest
+from ..services.langchain_service import get_hint_chain
 
 hint_router = APIRouter()
 
