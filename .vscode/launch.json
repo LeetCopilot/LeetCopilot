@@ -10,7 +10,7 @@
             "justMyCode": true
         },
         {
-            "name": "FastAPI",
+            "name": "Backend - FastAPI",
             "type": "python",
             "request": "launch",
             "module": "uvicorn",
@@ -20,15 +20,21 @@
             ],
             "console": "integratedTerminal",
             "justMyCode": true,
-            "cwd": "${workspaceFolder}/backend/src"
+            "cwd": "${workspaceFolder}/backend"
         },
         {
-            "name": "React Frontend",
+            "name": "Frontend - React",
             "type": "node-terminal",
             "request": "launch",
             "command": "yarn watch",
             "cwd": "${workspaceFolder}/frontend",
             "internalConsoleOptions": "neverOpen"
+        }
+    ],
+    "compounds": [
+        {
+            "name": "Full Stack",
+            "configurations": ["Backend - FastAPI", "Frontend - React"]
         }
     ]
 }
