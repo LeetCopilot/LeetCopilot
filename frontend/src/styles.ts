@@ -56,7 +56,7 @@ export const styles = {
     justifyContent: "center",
     width: "1.5rem",
     height: "1.5rem",
-    backgroundColor: "#121F33",
+    backgroundColor: "white",
     marginLeft: "10vw",
     marginBottom: "0.5rem",
     borderRadius: "45%",
