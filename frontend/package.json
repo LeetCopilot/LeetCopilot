@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && vite build --mode content",
     "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "watch": "npm-watch"
@@ -48,10 +48,9 @@
   "watch": {
     "build": {
       "patterns": [
-        "src",
-        "public"
+        "src"
       ],
-      "extensions": "ts,tsx,js,css"
+      "extensions": "ts,tsx,css"
     }
   }
 }
