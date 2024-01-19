@@ -1,5 +1,8 @@
 import React from "react";
 import { styles } from "../styles";
+import { Button } from "./ui/button";
+import { Textarea } from "./ui/textarea";
+import { Send } from "lucide-react";
 
 type PromptBoxProps = {
   responseFromContent: string;
@@ -9,18 +12,23 @@ type PromptBoxProps = {
 
 const PromptBox = ({ responseFromContent, setIsTyping, requestHint }: PromptBoxProps) => {
   return (
-    <div className="flex flex-col justify-center">
-      <textarea
-        placeholder={"Test the content.js script"}
-        className="h-12 w-full resize-none rounded-lg border-solid p-2"
+    <div className="dark:bg-leetdarkgray2 flex flex-row items-end justify-center rounded bg-[#ffd488] p-1">
+      <Textarea
+        placeholder={"What can we help you with?"}
+        className="h-12 w-full resize-none rounded-lg border-transparent bg-transparent dark:bg-transparent"
         value={responseFromContent}
         onChange={() => {}}
         onFocus={() => setIsTyping(true)}
         onBlur={() => setIsTyping(false)}
       />
-      <div className="flex w-full justify-end">
-        <button onClick={requestHint}>Submit</button>
-      </div>
+      {/* <div className="flex w-full justify-end">
+        <Button size="sm" onClick={requestHint}>
+          Submit
+        </Button>
+      </div> */}
+      <Button size="reallySmall" onClick={requestHint} variant="ghost">
+        <Send className="h-5 w-5 text-black dark:text-orange-400" />
+      </Button>
     </div>
   );
 };
