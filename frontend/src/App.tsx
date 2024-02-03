@@ -61,7 +61,7 @@ const App: FC = () => {
 
       const response = await axios.post("http://localhost:8000/hint", leetData);
 
-      setHint(response.data);
+      setHint(response.data.line + ": " + response.data.hint);
     } catch (error) {
       console.error(error);
     }

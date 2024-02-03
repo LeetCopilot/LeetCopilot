@@ -1,50 +1,33 @@
+from typing import List
 import os
 from langchain import LLMChain, PromptTemplate
 from langchain.llms import LlamaCpp
 from langchain.callbacks.manager import CallbackManager
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 
+from langchain.prompts import PromptTemplate
+from langchain_core.output_parsers import JsonOutputParser, StrOutputParser
+from langchain_core.pydantic_v1 import BaseModel, Field
+from langchain_openai import ChatOpenAI
 
-# hint_prompt = PromptTemplate.from_template(template=hint_prompt_template)
+def get_hint_chain(description: str, code: str) -> dict:
+    model = ChatOpenAI(model="gpt-3.5-turbo",temperature=0.5)
 
-MODEL_PATH = "C:/LlamaModels/llama-2-7b-chat.Q2_K.gguf"
+    # Define your desired data structure.
+    class Hint(BaseModel):
+        line: int = Field(description="the faulty line")
+        hint: str = Field(description="a hint to fix the faulty line")
+    # And a query intented to prompt a language model to populate the data structure.
 
-def load_model() -> LlamaCpp:
-    callback: CallbackManager = CallbackManager([StreamingStdOutCallbackHandler()])
+    # Set up a parser + inject instructions into the prompt template.
+    json_parser = JsonOutputParser(pydantic_object=Hint)
 
-    llama_model: LlamaCpp = LlamaCpp(
-        model_path=MODEL_PATH,
-        temperature=0.5,
-        max_tokens=500,
-        top_p = 1,
-        callback_manager=callback,
-        verbose=True
+    prompt = PromptTemplate(
+        template="Help the user solve their problem, this is a leetcode environment so dont worry about things like imports.\n{format_instructions}\n{description}\n{code}\nRemember to respond in JSON form that is very important. Only provide the JSON response and nothing else!",
+        input_variables=["description", "code"],
+        partial_variables={"format_instructions": json_parser.get_format_instructions()},
     )
 
-    return llama_model
+    chain = prompt | model | json_parser
 
-def get_hint_chain(description: str, code: str) -> str:
-    print(description, code)
-    llm = load_model()
-    hint_prompt_template = f'''
-You are an programming instructor named Cody who will help me with problems!
-I'm stuck on this LeetCode problem and don't know why my code isn't working. Can you tell me whats wrong?
-
-Problem Description:
-Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.
-
-Code:
-class Solution:
-    def twoSum(self, nums: List[int], target: int) -> List[int]:
-        prevMap = dict()  # val -> index
-        for i in range(len(nums)):
-            n = nums[i]
-            diff = target - n
-            if diff in prevMap:
-                return [prevMap[diff], i]
-            prevMap[i] = n
-
-            
-Response:'''
-    hint = llm.generate([hint_prompt_template])
-    return hint
+    return chain.invoke({"description": description, "code": code})
