@@ -8,7 +8,7 @@ hint_router = APIRouter()
 async def root() -> str:
     return "Welcome to LeetCopilot!"
 
-@hint_router.post("/hint", response_model=str)
+@hint_router.post("/hint", response_model=dict)
 async def get_hint(promptData: HintRequest):
     hint = get_hint_chain(description=promptData.description, code=promptData.code)
     return hint
