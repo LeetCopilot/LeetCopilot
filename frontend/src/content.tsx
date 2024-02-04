@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
+import MyComponent from "./test";
 
 /**
  * Extracts the code from HTML content.
@@ -82,18 +83,18 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   }
 });
 
-/**
- * Fired when a message is sent from either an extension process or a content script.
- */
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  switch (message.type) {
-    case "SCRAPE_HINT_DATA":
-      sendResponse({ problem: scrapeDescription(), code: scrapeCode() });
-      return true;
-  }
-});
+// /**
+//  * Fired when a message is sent from either an extension process or a content script.
+//  */
+// chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+//   switch (message.type) {
+//     case "SCRAPE_HINT_DATA":
+//       sendResponse({ problem: scrapeDescription(), code: scrapeCode() });
+//       return true;
+//   }
+// });
 
-const MAX_WAIT = 5000;
+const MAX_WAIT = 50000;
 
 window.onload = async () => {
   const path = window.location.href.split(".com")[1];
@@ -101,7 +102,8 @@ window.onload = async () => {
   if (!path.includes("/problems/")) return;
 
   let editor: Element | null;
-  let title: Element | null;
+  let runBar: Element | null;
+  let runBarIcon: Element | null | undefined;
 
   let timeWaited = 0;
   let waitTime = 50;
@@ -110,36 +112,32 @@ window.onload = async () => {
     await wait(waitTime);
     timeWaited += waitTime;
     waitTime += 50; // Wait 50ms longer each time
-
+    runBar = document.querySelector(
+      ".flex.h-8.items-center.justify-between.border-b.p-1.border-border-quaternary > .flex.items-center.gap-1",
+    );
     editor = document.querySelector("[data-track-load='code_editor']");
-    title = document.querySelector(`a[href="${path}"]`);
-  } while (!(editor && title) && timeWaited < MAX_WAIT);
+    console.log("Scraping..." + (editor != null) + "  " + (runBar != null));
+  } while (!(editor && runBar) && timeWaited < MAX_WAIT);
 
-  if (!(editor && title)) throw new Error("Page elements not found");
+  runBarIcon = runBar?.firstElementChild;
 
-  let id = title.textContent?.split(".")[0];
-  if (!id) throw new Error("Could not get problem ID");
-
-  let localStorageKey = findKeyId(id);
-  // TODO: update logic to give better feedback to user and not just console.log
-  if (!localStorageKey) {
-    console.log("start editing the code in order to process it");
-  } else {
-    console.log("code", localStorageKey);
-    console.log(JSON.parse(localStorage.getItem(localStorageKey) || "null"));
-  }
+  if (!(editor && runBar)) throw new Error("Page elements not found");
 
   let root = document.createElement("div");
-  (root.style as any) =
-    "position: absolute; top: 0; left: 0; bottom: 0; right: 0; z-index: 1000; background: transparent; pointer-events: none;";
-  editor.appendChild(root);
+  // (root.style as any) =
+  //   "position: absolute; top: 0; left: 0; bottom: 0; right: 0; z-index: 1000; background: transparent; pointer-events: none;";
+  runBar.insertBefore(root, runBar.firstChild);
 
   ReactDOM.createRoot(root).render(
     <button
-      className="pointer-events-auto absolute bottom-6 right-6 h-12 w-12 rounded-lg bg-black"
+      className="enabled:hover:bg-fill-secondary enabled:active:bg-fill-primary text-caption text-text-primary group pointer-events-auto relative ml-auto inline-flex cursor-pointer items-center justify-center gap-2 rounded bg-transparent p-1 font-medium transition-colors focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
       onClick={() => console.log("Button Go Brrrrrrr")}
     >
-      Hint
+      {/* Grey Circle */}
+      <div className="flex h-3.5 w-3.5 items-center justify-center rounded-full bg-stone-400">
+        {/* Smaller Orange Circle Inside */}
+        <div className="h-2 w-2 rounded-full bg-orange-400"></div>
+      </div>
     </button>,
   );
 };
