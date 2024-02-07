@@ -3,8 +3,8 @@ import axios from "axios";
 import { NavBar, Indicator, PromptBox } from "./components";
 
 interface LeetData {
-  title: string;
   description: string;
+  code: string;
 }
 
 const App: FC = () => {
@@ -58,7 +58,7 @@ const App: FC = () => {
     try {
       const currentTabId = await getCurrentTabId();
       const leetData = await sendMessageToContentScript(currentTabId);
-
+      console.log(leetData);
       const response = await axios.post("http://localhost:8000/hint", leetData);
 
       setHint(response.data.line + ": " + response.data.hint);

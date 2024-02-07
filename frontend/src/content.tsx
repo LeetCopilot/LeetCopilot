@@ -1,7 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import axios from "axios";
 import App from "./App";
-import MyComponent from "./test";
+
 
 /**
  * Extracts the code from HTML content.
@@ -63,13 +64,33 @@ function scrapeDescription() {
  * @return {Object} - An object with scraped code and description.
  */
 function scrapeHintData() {
-  const code = scrapeCode();
   const description = scrapeDescription();
+  const code = scrapeCode();
 
   return {
-    description,
-    code,
+    description: description,
+    code: code,
   };
+}
+
+async function RequestCodeReview() {
+  // Get the hint based on the code
+  const hintData = scrapeHintData();
+  console.log(hintData);
+  const response = await axios.post("http://localhost:8000/hint", hintData);
+  console.log(response.data);
+
+  // const response = {"data":{ "line": 1, "hint": "Issue!"}};
+
+  // Add the hint to the code in the form of a comment
+  const {line, hint} = response.data;
+  const editor = document.querySelector(".view-lines.monaco-mouse-cursor-text");
+  const line_to_hint = editor?.children[line - 1];
+  // <span class="mtk3">#&nbsp;val&nbsp;-&gt;&nbsp;index</span>
+  const comment = document.createElement("span");
+  comment.className = "mtk3";
+  comment.innerHTML = `&nbsp;&nbsp;# ${hint}`;
+  line_to_hint?.appendChild(comment);
 }
 
 // Listener for messages from either an extension process or a content script.
@@ -83,17 +104,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   }
 });
 
-// /**
-//  * Fired when a message is sent from either an extension process or a content script.
-//  */
-// chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-//   switch (message.type) {
-//     case "SCRAPE_HINT_DATA":
-//       sendResponse({ problem: scrapeDescription(), code: scrapeCode() });
-//       return true;
-//   }
-// });
-
 const MAX_WAIT = 50000;
 
 window.onload = async () => {
@@ -101,7 +111,6 @@ window.onload = async () => {
 
   if (!path.includes("/problems/")) return;
 
-  let editor: Element | null;
   let runBar: Element | null;
   let runBarIcon: Element | null | undefined;
 
@@ -115,13 +124,11 @@ window.onload = async () => {
     runBar = document.querySelector(
       ".flex.h-8.items-center.justify-between.border-b.p-1.border-border-quaternary > .flex.items-center.gap-1",
     );
-    editor = document.querySelector("[data-track-load='code_editor']");
-    console.log("Scraping..." + (editor != null) + "  " + (runBar != null));
-  } while (!(editor && runBar) && timeWaited < MAX_WAIT);
+  } while (!runBar && timeWaited < MAX_WAIT);
 
   runBarIcon = runBar?.firstElementChild;
 
-  if (!(editor && runBar)) throw new Error("Page elements not found");
+  if (!runBar) throw new Error("Page elements not found");
 
   let root = document.createElement("div");
   // (root.style as any) =
@@ -131,14 +138,14 @@ window.onload = async () => {
   ReactDOM.createRoot(root).render(
     <button
       className="enabled:hover:bg-fill-secondary enabled:active:bg-fill-primary text-caption text-text-primary group pointer-events-auto relative ml-auto inline-flex cursor-pointer items-center justify-center gap-2 rounded bg-transparent p-1 font-medium transition-colors focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
-      onClick={() => console.log("Button Go Brrrrrrr")}
+      onClick={async () => await RequestCodeReview()}
     >
       {/* Grey Circle */}
       <div className="flex h-3.5 w-3.5 items-center justify-center rounded-full bg-stone-400">
         {/* Smaller Orange Circle Inside */}
-        <div className="h-2 w-2 rounded-full bg-orange-400"></div>
+        <div className="h-2 w-2 rounded-full bg-orange-400" />
       </div>
-    </button>,
+    </button>
   );
 };
 

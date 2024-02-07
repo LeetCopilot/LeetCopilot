@@ -16,14 +16,14 @@ def get_hint_chain(description: str, code: str) -> dict:
     # Define your desired data structure.
     class Hint(BaseModel):
         line: int = Field(description="the faulty line")
-        hint: str = Field(description="a hint to fix the faulty line")
+        hint: str = Field(description="a hint to fix the faulty line", max_length=50)
     # And a query intented to prompt a language model to populate the data structure.
 
     # Set up a parser + inject instructions into the prompt template.
     json_parser = JsonOutputParser(pydantic_object=Hint)
 
     prompt = PromptTemplate(
-        template="Help the user solve their problem, this is a leetcode environment so dont worry about things like imports.\n{format_instructions}\n{description}\n{code}\nRemember to respond in JSON form that is very important. Only provide the JSON response and nothing else!",
+        template="What is wrong with the following two sum submission: {code}\n The code is not working, find a problem. Given numbers [2,7,11,15] and target = 9 the code is expected to produce:[0,1] produces:[0,7]. Remember to respond in JSON form that is very important. \n{format_instructions}\n Only provide the JSON response and nothing else!\njson\n",
         input_variables=["description", "code"],
         partial_variables={"format_instructions": json_parser.get_format_instructions()},
     )
